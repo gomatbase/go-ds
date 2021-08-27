@@ -67,9 +67,9 @@ func (ll *LinkedList) Insert(value interface{}) {
 	ll.size++
 }
 
-func (ll *LinkedList) Get(index int) interface{} {
+func (ll *LinkedList) Get(index uint) interface{} {
 	pivot := ll.head
-	for i := 0; i < index; i++ {
+	for i := uint(0); i < index; i++ {
 		pivot = pivot.next
 	}
 	return pivot.value

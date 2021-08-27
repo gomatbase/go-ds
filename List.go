@@ -7,7 +7,7 @@ type List interface {
 	Filter(func(interface{}) bool) List
 	Insert(v interface{})
 	Add(v interface{})
-	Get(index int) interface{}
+	Get(index uint) interface{}
 	Head() interface{}
 	Tail() interface{}
 }
