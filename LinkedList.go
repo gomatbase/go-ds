@@ -21,18 +21,30 @@ func (ll *LinkedList) Clear() {
 	ll.size = 0
 }
 
-func (ll *LinkedList) ForEach(f func(interface{})) {
+func (ll *LinkedList) ForEach(f func(uint, interface{})) {
+	i := uint(0)
 	for p := ll.head; p != nil; p = p.next {
-		f(p.value)
+		f(i, p.value)
+		i++
 	}
 }
 
-func (ll *LinkedList) Filter(f func(interface{}) bool) List {
-	result := &LinkedList{}
+func (ll *LinkedList) Map(f func(uint, interface{}) interface{}) {
+	i := uint(0)
 	for p := ll.head; p != nil; p = p.next {
-		if f(p.value) {
+		p.value = f(i, p.value)
+		i++
+	}
+}
+
+func (ll *LinkedList) Filter(f func(uint, interface{}) bool) List {
+	result := &LinkedList{}
+	i := uint(0)
+	for p := ll.head; p != nil; p = p.next {
+		if f(i, p.value) {
 			result.Add(p.value)
 		}
+		i++
 	}
 	return result
 }
@@ -74,8 +86,8 @@ func (ll *LinkedList) InsertIn(value interface{}, index uint) {
 		ll.tail.next = newElement
 		ll.tail = newElement
 	} else {
-		newElement.next = pivot.next
-		pivot.next = newElement
+		newElement.next = pivot
+		previous.next = newElement
 	}
 	ll.size++
 }
