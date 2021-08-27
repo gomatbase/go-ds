@@ -8,4 +8,6 @@ type List interface {
 	Insert(v interface{})
 	Add(v interface{})
 	Get(index int) interface{}
+	Head() interface{}
+	Tail() interface{}
 }

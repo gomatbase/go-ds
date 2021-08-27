@@ -74,3 +74,17 @@ func (ll *LinkedList) Get(index int) interface{} {
 	}
 	return pivot.value
 }
+
+func (ll *LinkedList) Head() interface{} {
+	if ll.head != nil {
+		return ll.head.value
+	}
+	return nil
+}
+
+func (ll *LinkedList) Tail() interface{} {
+	if ll.tail != nil {
+		return ll.tail.value
+	}
+	return nil
+}
