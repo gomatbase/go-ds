@@ -53,18 +53,41 @@ func (ll *LinkedList) Add(value interface{}) {
 }
 
 func (ll *LinkedList) Insert(value interface{}) {
-	if ll.head == nil {
-		ll.head = &linkedListElement{
-			value: value,
-		}
-		ll.tail = ll.head
+	ll.InsertIn(value, 0)
+}
+
+func (ll *LinkedList) InsertIn(value interface{}, index uint) {
+	var previous *linkedListElement
+	pivot := ll.head
+	for i := uint(0); i < index; i++ {
+		previous = pivot
+		pivot = pivot.next
+	}
+	newElement := &linkedListElement{value: value}
+	if ll.head == nil { // to reach here it means index is 0 and pivot is nil
+		ll.head = newElement
+		ll.tail = newElement
+	} else if previous == nil {
+		newElement.next = ll.head
+		ll.head = newElement
+	} else if pivot == nil { // to reach here means the head is not nil and it had gone through the list
+		ll.tail.next = newElement
+		ll.tail = newElement
 	} else {
-		ll.head = &linkedListElement{
-			next:  ll.head,
-			value: value,
-		}
+		newElement.next = pivot.next
+		pivot.next = newElement
 	}
 	ll.size++
+}
+
+func (ll *LinkedList) ReplaceIn(value interface{}, index uint) interface{} {
+	pivot := ll.head
+	for i := uint(0); i < index; i++ {
+		pivot = pivot.next
+	}
+	oldValue := pivot.value
+	pivot.value = value
+	return oldValue
 }
 
 func (ll *LinkedList) Get(index uint) interface{} {
@@ -87,4 +110,28 @@ func (ll *LinkedList) Tail() interface{} {
 		return ll.tail.value
 	}
 	return nil
+}
+
+func (ll *LinkedList) RemoveFrom(index uint) interface{} {
+	var previous *linkedListElement
+	pivot := ll.head
+	for i := uint(0); i < index; i++ {
+		previous = pivot
+		pivot = pivot.next
+	}
+
+	if previous == nil { // to reach here, index is 0
+		ll.head = ll.head.next
+		if ll.head == nil { // removed last element, clearing the tail too
+			ll.tail = nil
+		}
+	} else if pivot == ll.tail {
+		ll.tail = previous
+		ll.tail.next = nil
+	} else {
+		previous.next = pivot.next
+		pivot.next = nil
+	}
+	ll.size--
+	return pivot.value
 }
